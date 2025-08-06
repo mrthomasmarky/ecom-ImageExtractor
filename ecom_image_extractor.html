@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Image Extractor</title>
+    <meta name="description" content="Extract and download images from Amazon product listings">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Amazon Images">
+    
+    <!-- Icons for PWA -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23667eea' d='M50 10c22.09 0 40 17.91 40 40S72.09 90 50 90 10 72.09 10 50 27.91 10 50 10zm20 35H55V30c0-2.76-2.24-5-5-5s-5 2.24-5 5v15H30c-2.76 0-5 2.24-5 5s2.24 5 5 5h15v15c0 2.76 2.24 5 5 5s5-2.24 5-5V55h15c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/%3E%3C/svg%3E">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .input-section {
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: white;
+            padding: 0 6px;
+            font-size: 13px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 3px solid #e0e0e0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            margin-top: 25px;
+        }
+
+        .results h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .image-item {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .image-item button {
+            width: 100%;
+            padding: 8px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-item button:hover {
+            background: #5a6fd8;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #c33;
+            margin: 15px 0;
+        }
+
+        .success {
+            background: #efe;
+            color: #363;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #363;
+            margin: 15px 0;
+        }
+
+        .info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #1976d2;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                min-width: auto;
+            }
+            
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+        }
+
+        /* Install button styles */
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .install-prompt:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Amazon Image Extractor</h1>
+            <p>Extract and download images from Amazon product listings</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label>Amazon Product URL</label>
+                <input type="url" id="amazonUrl" placeholder="https://www.amazon.com/dp/PRODUCT_ID">
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="extractImages()">
+                    🔍 Extract Images
+                </button>
+                <button class="btn btn-secondary" onclick="clearResults()">
+                    🗑️ Clear Results
+                </button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Extracting images...</p>
+        </div>
+
+        <div id="messages"></div>
+
+        <div class="results" id="results" style="display: none;">
+            <h3>Extracted Images</h3>
+            <div class="image-grid" id="imageGrid"></div>
+            <button class="btn btn-primary" onclick="downloadAll()" id="downloadAllBtn">
+                📥 Download All Images
+            </button>
+        </div>
+    </div>
+
+    <div class="install-prompt" id="installPrompt" onclick="installPWA()">
+        📱 Install App
+    </div>
+
+    <script>
+        let extractedImages = [];
+        let deferredPrompt;
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                        document.getElementById('installPrompt').style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                const CACHE_NAME = 'amazon-image-extractor-v1';
+                const urlsToCache = [
+                    '/',
+                    '/index.html'
+                ];
+
+                self.addEventListener('install', (event) => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then((cache) => cache.addAll(urlsToCache))
+                    );
+                });
+
+                self.addEventListener('fetch', (event) => {
+                    event.respondWith(
+                        caches.match(event.request)
+                            .then((response) => {
+                                if (response) {
+                                    return response;
+                                }
+                                return fetch(event.request);
+                            }
+                        )
+                    );
+                });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            const messageEl = document.createElement('div');
+            messageEl.className = type;
+            messageEl.textContent = message;
+            messagesDiv.appendChild(messageEl);
+            
+            setTimeout(() => {
+                messageEl.remove();
+            }, 5000);
+        }
+
+        function clearResults() {
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('imageGrid').innerHTML = '';
+            document.getElementById('messages').innerHTML = '';
+            extractedImages = [];
+        }
+
+        async function extractImages() {
+            const url = document.getElementById('amazonUrl').value.trim();
+            
+            if (!url) {
+                showMessage('Please enter an Amazon product URL', 'error');
+                return;
+            }
+
+            if (!url.includes('amazon.')) {
+                showMessage('Please enter a valid Amazon URL', 'error');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            try {
+                // Since we can't directly fetch from Amazon due to CORS,
+                // we'll simulate the extraction process and provide instructions
+                await simulateExtraction();
+                
+                // Show demo images for demonstration
+                showDemoImages();
+                
+                showMessage('Note: Due to CORS restrictions, this demo shows sample images. In a real implementation, you would need a backend service or browser extension.', 'info');
+                
+            } catch (error) {
+                showMessage('Error extracting images: ' + error.message, 'error');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        async function simulateExtraction() {
+            return new Promise(resolve => {
+                setTimeout(resolve, 2000);
+            });
+        }
+
+        function showDemoImages() {
+            const demoImages = [
+                'https://via.placeholder.com/400x300/667eea/white?text=Product+Image+1',
+                'https://via.placeholder.com/400x300/764ba2/white?text=Product+Image+2',
+                'https://via.placeholder.com/400x300/f093fb/white?text=Product+Image+3',
+                'https://via.placeholder.com/400x300/4facfe/white?text=Product+Image+4',
+                'https://via.placeholder.com/400x300/43e97b/white?text=Product+Image+5',
+                'https://via.placeholder.com/400x300/feca57/white?text=Product+Image+6'
+            ];
+
+            extractedImages = demoImages;
+            displayImages(demoImages);
+        }
+
+        function displayImages(images) {
+            const imageGrid = document.getElementById('imageGrid');
+            imageGrid.innerHTML = '';
+
+            images.forEach((imageUrl, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
+                
+                imageItem.innerHTML = `
+                    <img src="${imageUrl}" alt="Product Image ${index + 1}" loading="lazy">
+                    <button onclick="downloadImage('${imageUrl}', ${index})">
+                        📥 Download
+                    </button>
+                `;
+                
+                imageGrid.appendChild(imageItem);
+            });
+
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function downloadImage(url, index) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `amazon-product-image-${index + 1}.jpg`;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showMessage(`Image ${index + 1} download started`, 'success');
+        }
+
+        async function downloadAll() {
+            if (extractedImages.length === 0) {
+                showMessage('No images to download', 'error');
+                return;
+            }
+
+            showMessage(`Starting download of ${extractedImages.length} images...`, 'success');
+            
+            extractedImages.forEach((url, index) => {
+                setTimeout(() => {
+                    downloadImage(url, index);
+                }, index * 500); // Stagger downloads
+            });
+        }
+
+        // Handle URL input on mobile
+        document.getElementById('amazonUrl').addEventListener('paste', (e) => {
+            setTimeout(() => {
+                const url = e.target.value;
+                if (url && url.includes('amazon.')) {
+                    showMessage('Amazon URL detected! Click Extract Images to proceed.', 'success');
+                }
+            }, 100);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    extractImages();
+                } else if (e.key === 'r') {
+                    e.preventDefault();
+                    clearResults();
+                }
+            }
+        });
+
+        // Add manifest dynamically
+        const manifestData = {
+            "name": "Amazon Image Extractor",
+            "short_name": "Amazon Images",
+            "description": "Extract and download images from Amazon product listings",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#667eea",
+            "theme_color": "#667eea",
+            "orientation": "portrait-primary",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cpath fill='%23667eea' d='M96 16c44.18 0 80 35.82 80 80s-35.82 80-80 80-80-35.82-80-80S51.82 16 96 16zm40 70H112V62c0-8.84-7.16-16-16-16s-16 7.16-16 16v24H56c-8.84 0-16 7.16-16 16s7.16 16 16 16h24v24c0 8.84 7.16 16 16 16s16-7.16 16-16v-24h24c8.84 0 16-7.16 16-16s-7.16-16-16-16z'/%3E%3C/svg%3E",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml"
+                },
+                {
+                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23667eea' d='M256 16c132.55 0 240 107.45 240 240S388.55 496 256 496 16 388.55 16 256 123.45 16 256 16zm80 214H288V182c0-17.67-14.33-32-32-32s-32 14.33-32 32v48h-48c-17.67 0-32 14.33-32 32s14.33 32 32 32h48v48c0 17.67 14.33 32 32 32s32-14.33 32-32v-48h48c17.67 0 32-14.33 32-32s-14.33-32-32-32z'/%3E%3C/svg%3E",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml"
+                }
+            ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        // Show install prompt after 5 seconds if not already shown
+        setTimeout(() => {
+            if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+                const installPrompt = document.getElementById('installPrompt');
+                if (installPrompt.style.display === 'none' || !installPrompt.style.display) {
+                    installPrompt.style.display = 'block';
+                    installPrompt.innerHTML = '📱 Add to Home Screen';
+                }
+            }
+        }, 5000);
+
+        // Welcome message
+        window.addEventListener('load', () => {
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                showMessage('Welcome to Amazon Image Extractor! App is running in standalone mode.', 'success');
+            } else {
+                showMessage('Tip: Install this app for the best experience on mobile and desktop!', 'info');
+            }
+        });
+    </script>
+</body>
+</html>
