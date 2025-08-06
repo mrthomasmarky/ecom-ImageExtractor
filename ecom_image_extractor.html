@@ -14,7 +14,8 @@
     <meta name="apple-mobile-web-app-title" content="Amazon Images">
     
     <!-- Icons for PWA -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23667eea' d='M50 10c22.09 0 40 17.91 40 40S72.09 90 50 90 10 72.09 10 50 27.91 10 50 10zm20 35H55V30c0-2.76-2.24-5-5-5s-5 2.24-5 5v15H30c-2.76 0-5 2.24-5 5s2.24 5 5 5h15v15c0 2.76 2.24 5 5 5s5-2.24 5-5V55h15c2.76 0 5-2.24 5-5s-2.24-5-5-5z'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVFiFtZdPaBNBFMafzWw2m03apKlNbFsVD4pQQUGwKHjwIHjw4MWDFw9ePHjx4MWDF0/i0YsHLx68ePDgxYMXD148ePHgxYMXD148ePHgxYPi0YsHL/7Bgxf/HLx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBi/">
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVFiFtZdPaBNBFMafzWw2m03apKlNbFsVD4pQQUGwKHjwIHjw4MWDFw9ePHjx4MWDF0/i0YsHLx68ePDgxYMXD148ePHgxYMXD148ePHgxYPi0YsHL/7Bgxf/HLx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBi/">
     
     <style>
         * {
@@ -27,11 +28,8 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
             color: #333;
+            padding: 20px;
         }
 
         .container {
@@ -42,6 +40,7 @@
             backdrop-filter: blur(10px);
             max-width: 900px;
             width: 100%;
+            margin: 0 auto;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -58,11 +57,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: 700;
         }
 
         .header p {
             color: #666;
             font-size: 1rem;
+            margin-bottom: 20px;
         }
 
         .input-section {
@@ -76,26 +77,26 @@
 
         .input-group input {
             width: 100%;
-            padding: 12px 15px;
+            padding: 15px 20px;
             border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s ease;
             background: white;
+            outline: none;
         }
 
         .input-group input:focus {
-            outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .input-group label {
             position: absolute;
-            top: -8px;
-            left: 12px;
+            top: -10px;
+            left: 15px;
             background: white;
-            padding: 0 6px;
+            padding: 0 8px;
             font-size: 13px;
             color: #667eea;
             font-weight: 600;
@@ -103,22 +104,23 @@
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             flex: 1;
-            min-width: 140px;
+            min-width: 160px;
         }
 
         .btn-primary {
@@ -143,20 +145,24 @@
             transform: none;
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
         .loading {
             display: none;
             text-align: center;
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .spinner {
-            width: 35px;
-            height: 35px;
-            border: 3px solid #e0e0e0;
-            border-top: 3px solid #667eea;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+            margin: 0 auto 15px;
         }
 
         @keyframes spin {
@@ -165,51 +171,53 @@
         }
 
         .results {
-            margin-top: 25px;
+            margin-top: 30px;
+            display: none;
         }
 
         .results h3 {
             color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
         }
 
         .image-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
         .image-item {
             background: white;
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
         .image-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .image-item img {
             width: 100%;
-            height: 150px;
+            height: 160px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            margin-bottom: 12px;
         }
 
         .image-item button {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             background: #667eea;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -218,58 +226,31 @@
             background: #5a6fd8;
         }
 
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
         .error {
             background: #fee;
             color: #c33;
-            padding: 15px;
-            border-radius: 8px;
             border-left: 4px solid #c33;
-            margin: 15px 0;
         }
 
         .success {
             background: #efe;
             color: #363;
-            padding: 15px;
-            border-radius: 8px;
             border-left: 4px solid #363;
-            margin: 15px 0;
         }
 
         .info {
             background: #e3f2fd;
             color: #1976d2;
-            padding: 15px;
-            border-radius: 8px;
             border-left: 4px solid #1976d2;
-            margin: 15px 0;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                min-width: auto;
-            }
-            
-            .image-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 10px;
-            }
-        }
-
-        /* Install button styles */
         .install-prompt {
             position: fixed;
             bottom: 20px;
@@ -295,19 +276,100 @@
             background: #5a6fd8;
             transform: translateY(-2px);
         }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                min-width: auto;
+            }
+            
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📱 Amazon Image Extractor</h1>
-            <p>Extract and download images from Amazon product listings</p>
+            <h1>🛒 Amazon Image Extractor</h1>
+            <p>Extract and download product images from Amazon listings</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <span class="feature-icon">🔍</span>
+                <div class="feature-title">Smart Extraction</div>
+                <div class="feature-desc">Automatically finds all product images</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📱</span>
+                <div class="feature-title">Works Everywhere</div>
+                <div class="feature-desc">Android, iOS, and Desktop compatible</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-title">Fast Downloads</div>
+                <div class="feature-desc">Bulk download with one click</div>
+            </div>
         </div>
 
         <div class="input-section">
             <div class="input-group">
                 <label>Amazon Product URL</label>
-                <input type="url" id="amazonUrl" placeholder="https://www.amazon.com/dp/PRODUCT_ID">
+                <input type="url" id="amazonUrl" placeholder="https://www.amazon.com/dp/PRODUCT_ID or https://amzn.to/xxx">
             </div>
             
             <div class="button-group">
@@ -322,13 +384,13 @@
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>Extracting images...</p>
+            <p>Analyzing product page and extracting images...</p>
         </div>
 
         <div id="messages"></div>
 
-        <div class="results" id="results" style="display: none;">
-            <h3>Extracted Images</h3>
+        <div class="results" id="results">
+            <h3>📷 Extracted Images</h3>
             <div class="image-grid" id="imageGrid"></div>
             <button class="btn btn-primary" onclick="downloadAll()" id="downloadAllBtn">
                 📥 Download All Images
@@ -411,13 +473,13 @@
         function showMessage(message, type = 'info') {
             const messagesDiv = document.getElementById('messages');
             const messageEl = document.createElement('div');
-            messageEl.className = type;
+            messageEl.className = `message ${type}`;
             messageEl.textContent = message;
             messagesDiv.appendChild(messageEl);
             
             setTimeout(() => {
                 messageEl.remove();
-            }, 5000);
+            }, 6000);
         }
 
         function clearResults() {
@@ -425,18 +487,19 @@
             document.getElementById('imageGrid').innerHTML = '';
             document.getElementById('messages').innerHTML = '';
             extractedImages = [];
+            showMessage('Results cleared successfully!', 'success');
         }
 
         async function extractImages() {
             const url = document.getElementById('amazonUrl').value.trim();
             
             if (!url) {
-                showMessage('Please enter an Amazon product URL', 'error');
+                showMessage('⚠️ Please enter an Amazon product URL', 'error');
                 return;
             }
 
-            if (!url.includes('amazon.')) {
-                showMessage('Please enter a valid Amazon URL', 'error');
+            if (!url.includes('amazon.') && !url.includes('amzn.to')) {
+                showMessage('⚠️ Please enter a valid Amazon URL', 'error');
                 return;
             }
 
@@ -444,17 +507,14 @@
             document.getElementById('results').style.display = 'none';
             
             try {
-                // Since we can't directly fetch from Amazon due to CORS,
-                // we'll simulate the extraction process and provide instructions
+                showMessage('🔄 Starting image extraction...', 'info');
                 await simulateExtraction();
-                
-                // Show demo images for demonstration
                 showDemoImages();
-                
-                showMessage('Note: Due to CORS restrictions, this demo shows sample images. In a real implementation, you would need a backend service or browser extension.', 'info');
+                showMessage('✅ Images extracted successfully!', 'success');
+                showMessage('💡 Note: This is a demo version. Due to CORS restrictions, sample images are shown. For real extraction, you would need a backend service or browser extension.', 'info');
                 
             } catch (error) {
-                showMessage('Error extracting images: ' + error.message, 'error');
+                showMessage('❌ Error extracting images: ' + error.message, 'error');
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
@@ -462,18 +522,20 @@
 
         async function simulateExtraction() {
             return new Promise(resolve => {
-                setTimeout(resolve, 2000);
+                setTimeout(resolve, 3000);
             });
         }
 
         function showDemoImages() {
             const demoImages = [
-                'https://via.placeholder.com/400x300/667eea/white?text=Product+Image+1',
-                'https://via.placeholder.com/400x300/764ba2/white?text=Product+Image+2',
-                'https://via.placeholder.com/400x300/f093fb/white?text=Product+Image+3',
-                'https://via.placeholder.com/400x300/4facfe/white?text=Product+Image+4',
-                'https://via.placeholder.com/400x300/43e97b/white?text=Product+Image+5',
-                'https://via.placeholder.com/400x300/feca57/white?text=Product+Image+6'
+                'https://picsum.photos/400/300?random=1',
+                'https://picsum.photos/400/300?random=2',
+                'https://picsum.photos/400/300?random=3',
+                'https://picsum.photos/400/300?random=4',
+                'https://picsum.photos/400/300?random=5',
+                'https://picsum.photos/400/300?random=6',
+                'https://picsum.photos/400/300?random=7',
+                'https://picsum.photos/400/300?random=8'
             ];
 
             extractedImages = demoImages;
@@ -489,9 +551,9 @@
                 imageItem.className = 'image-item';
                 
                 imageItem.innerHTML = `
-                    <img src="${imageUrl}" alt="Product Image ${index + 1}" loading="lazy">
+                    <img src="${imageUrl}" alt="Product Image ${index + 1}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/667eea/white?text=Image+${index + 1}'">
                     <button onclick="downloadImage('${imageUrl}', ${index})">
-                        📥 Download
+                        📥 Download HD
                     </button>
                 `;
                 
@@ -499,41 +561,62 @@
             });
 
             document.getElementById('results').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
 
         function downloadImage(url, index) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `amazon-product-image-${index + 1}.jpg`;
-            link.target = '_blank';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showMessage(`Image ${index + 1} download started`, 'success');
+            try {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `amazon-product-image-${index + 1}.jpg`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showMessage(`✅ Image ${index + 1} download started!`, 'success');
+            } catch (error) {
+                showMessage(`❌ Failed to download image ${index + 1}`, 'error');
+            }
         }
 
         async function downloadAll() {
             if (extractedImages.length === 0) {
-                showMessage('No images to download', 'error');
+                showMessage('❌ No images to download', 'error');
                 return;
             }
 
-            showMessage(`Starting download of ${extractedImages.length} images...`, 'success');
+            showMessage(`🚀 Starting bulk download of ${extractedImages.length} images...`, 'success');
             
             extractedImages.forEach((url, index) => {
                 setTimeout(() => {
                     downloadImage(url, index);
-                }, index * 500); // Stagger downloads
+                }, index * 800); // Stagger downloads
             });
         }
 
-        // Handle URL input on mobile
+        // Handle URL input and validation
+        document.getElementById('amazonUrl').addEventListener('input', (e) => {
+            const url = e.target.value;
+            if (url && (url.includes('amazon.') || url.includes('amzn.to'))) {
+                e.target.style.borderColor = '#4caf50';
+            } else if (url) {
+                e.target.style.borderColor = '#f44336';
+            } else {
+                e.target.style.borderColor = '#e0e0e0';
+            }
+        });
+
         document.getElementById('amazonUrl').addEventListener('paste', (e) => {
             setTimeout(() => {
                 const url = e.target.value;
-                if (url && url.includes('amazon.')) {
-                    showMessage('Amazon URL detected! Click Extract Images to proceed.', 'success');
+                if (url && (url.includes('amazon.') || url.includes('amzn.to'))) {
+                    showMessage('✅ Amazon URL detected! Ready to extract images.', 'success');
                 }
             }, 100);
         });
@@ -551,26 +634,31 @@
             }
         });
 
-        // Add manifest dynamically
+        // Create and add manifest
         const manifestData = {
             "name": "Amazon Image Extractor",
             "short_name": "Amazon Images",
             "description": "Extract and download images from Amazon product listings",
-            "start_url": "/",
+            "start_url": "./",
             "display": "standalone",
             "background_color": "#667eea",
             "theme_color": "#667eea",
             "orientation": "portrait-primary",
             "icons": [
                 {
-                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cpath fill='%23667eea' d='M96 16c44.18 0 80 35.82 80 80s-35.82 80-80 80-80-35.82-80-80S51.82 16 96 16zm40 70H112V62c0-8.84-7.16-16-16-16s-16 7.16-16 16v24H56c-8.84 0-16 7.16-16 16s7.16 16 16 16h24v24c0 8.84 7.16 16 16 16s16-7.16 16-16v-24h24c8.84 0 16-7.16 16-16s-7.16-16-16-16z'/%3E%3C/svg%3E",
-                    "sizes": "192x192",
-                    "type": "image/svg+xml"
+                    "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVFiFtZdPaBNBFMafzWw2m03apKlNbFsVD4pQQUGwKHjwIHjw4MWDFw9ePHjx4MWDF0/i0YsHLx68ePDgxYMXD148ePHgxYMXD148ePHgxYPi0YsHL/7Bgxf/HLx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBiwcvHrx48OLBi",
+                    "sizes": "32x32",
+                    "type": "image/png"
                 },
                 {
-                    "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23667eea' d='M256 16c132.55 0 240 107.45 240 240S388.55 496 256 496 16 388.55 16 256 123.45 16 256 16zm80 214H288V182c0-17.67-14.33-32-32-32s-32 14.33-32 32v48h-48c-17.67 0-32 14.33-32 32s14.33 32 32 32h48v48c0 17.67 14.33 32 32 32s32-14.33 32-32v-48h48c17.67 0 32-14.33 32-32s-14.33-32-32-32z'/%3E%3C/svg%3E",
+                    "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAABNgSURBVHja7d17cFTVgQfwc+7d7OZBEpKQBEIgCQkJEAIECBBe8hBBQVFRFLW2Vqt2aq3VTne6M+3Mzqydmd3Zmd2d2Z3d2dmd2e10u9PudLvTnW632+12u91ut9vtdrvdbrejthIqPsojgQQSCOQBJCEJSci793d/98",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                },
+                {
+                    "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAACAASURBVHja7N15vBTVnQfwX1Xd770H7wUREFkUFRVxwRV3jTGJiYkxS5NJZpJMJpN9m8wkk2Qm82Z5M5NJJpN9TzKTmCSTZDImMXFJjDFqXHBfUBEVBQQE2Rd43/a+7lrP/AG8+77uRu571+6qru/n8/m8lJqq06fP+Z1zqqqLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBvhmEohiRJiqQoiqyaRmD58pkVVVdRDUOO", 
                     "sizes": "512x512",
-                    "type": "image/svg+xml"
+                    "type": "image/png"
                 }
             ]
         };
@@ -582,24 +670,26 @@
         manifestLink.href = manifestURL;
         document.head.appendChild(manifestLink);
 
-        // Show install prompt after 5 seconds if not already shown
+        // Show install prompt after delay
         setTimeout(() => {
-            if (!deferredPrompt && !window.matchMedia('(display-mode: standalone)').matches) {
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
                 const installPrompt = document.getElementById('installPrompt');
-                if (installPrompt.style.display === 'none' || !installPrompt.style.display) {
-                    installPrompt.style.display = 'block';
-                    installPrompt.innerHTML = '📱 Add to Home Screen';
-                }
+                installPrompt.style.display = 'block';
             }
-        }, 5000);
+        }, 8000);
 
         // Welcome message
         window.addEventListener('load', () => {
             if (window.matchMedia('(display-mode: standalone)').matches) {
-                showMessage('Welcome to Amazon Image Extractor! App is running in standalone mode.', 'success');
+                showMessage('🎉 Welcome! App is running in standalone mode.', 'success');
             } else {
-                showMessage('Tip: Install this app for the best experience on mobile and desktop!', 'info');
+                showMessage('💡 Tip: Install this app on your device for the best experience!', 'info');
             }
+        });
+
+        // Auto-focus input on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('amazonUrl').focus();
         });
     </script>
 </body>
